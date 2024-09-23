@@ -6,6 +6,8 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import br.com.brenfeer.model.util.CaminhoArquivos;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,6 +21,8 @@ import javax.swing.JOptionPane;
 
 @Slf4j
 public class ArquivoExcel {
+
+	private CaminhoArquivos caminhoArquivos = new CaminhoArquivos();
 
 	final int COLUNA_TITULO_PRODUTO = 0;
 	final int COLUNA_CODIGO_PRODUTO = 1;
@@ -103,9 +107,9 @@ public class ArquivoExcel {
 
 	public void criarArquivo(final String nomeArquivo, final List<DadosPlanilha> dados) {
 		log.info("Gerando o arquivo {}", nomeArquivo);
-		String caminhoCompleto = "C:\\Projeto Robo Brenfeer\\planilhas\\" + nomeArquivo;
+		String caminhoCompleto = caminhoArquivos.getCaminhoArquivos() + "\\planilhas\\" + nomeArquivo;
 
-		File arquivo = new File(caminhoCompleto);
+		File arquivo = new File(caminhoArquivos.ajustarCaminhosArquivos(caminhoCompleto));
 		XSSFWorkbook workbook = null;
 
 		try {

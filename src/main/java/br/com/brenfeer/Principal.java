@@ -17,6 +17,7 @@ import br.com.brenfeer.model.ArquivoExcel;
 import br.com.brenfeer.model.DadosPlanilha;
 import br.com.brenfeer.model.LeitorXml;
 import br.com.brenfeer.model.VarredorWeb;
+import br.com.brenfeer.model.util.CaminhoArquivos;
 
 public class Principal {
 
@@ -26,12 +27,16 @@ public class Principal {
 	private static String senha = null;
 	private static VarredorWeb varredorWeb = new VarredorWeb();
 	private static ArquivoExcel arquivoExcel = new ArquivoExcel();
+	private static CaminhoArquivos caminhoArquivos = new CaminhoArquivos();
 
-	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, InterruptedException {
-		carregaDados("C:\\Projeto Robo Brenfeer\\bin\\config\\arquivo-acesso.xml", true);
+	public static void main(String[] args)
+			throws IOException, ParserConfigurationException, SAXException, InterruptedException {
+		String caminhoXml = caminhoArquivos.getCaminhoArquivos() + "\\bin\\config\\arquivo-acesso.xml";
+		carregaDados(caminhoArquivos.ajustarCaminhosArquivos(caminhoXml), true);
 		System.out.println("-----INICIANDO O ROBO DE SCRAPING-----");
 		System.out.println("\nLeitura do arquivo com os produtos");
-		arquivoExcel.lerArquivo("C:\\Projeto Robo Brenfeer\\planilhas\\produtos.xlsx");
+		String caminhoPlanilha = caminhoArquivos.getCaminhoArquivos() + "\\planilhas\\produtos.xlsx";
+		arquivoExcel.lerArquivo(caminhoArquivos.ajustarCaminhosArquivos(caminhoPlanilha));
 		processaScraping(arquivoExcel.listaDadosCapturados());
 		System.exit(0);
 	}
@@ -97,11 +102,11 @@ public class Principal {
 	}
 
 	public static void mensagemConsolePersonalizada(String message) {
-        int length = message.length() + 4;
+		int length = message.length() + 4;
 
-        System.out.println(" " + "-".repeat(length));
-        System.out.println("| " + message + " |");
-        System.out.println(" " + "-".repeat(length));
-    }
+		System.out.println(" " + "-".repeat(length));
+		System.out.println("| " + message + " |");
+		System.out.println(" " + "-".repeat(length));
+	}
 
 }

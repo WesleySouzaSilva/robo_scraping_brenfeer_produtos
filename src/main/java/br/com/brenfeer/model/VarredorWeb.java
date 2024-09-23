@@ -24,6 +24,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import br.com.brenfeer.model.util.CaminhoArquivos;
+
 public class VarredorWeb {
 
 	private String codigoFormatado = null;
@@ -38,6 +40,7 @@ public class VarredorWeb {
 	private Date data = null;
 	private ArrayList<DadosPlanilha> listaDados = new ArrayList<>();
 	private static boolean validaLogin = false;
+	private CaminhoArquivos caminhoArquivos = new CaminhoArquivos();
 
 	private static WebDriver driver = null;
 
@@ -47,7 +50,7 @@ public class VarredorWeb {
 //		options.setHeadless(true);
 //		 Adicione opções do Firefox, se necessário
 
-		System.setProperty("webdriver.chrome.driver", "C:\\Projeto Robo Brenfeer\\bin\\webdriver\\chromedriver.exe");
+		System.setProperty("webdriver.gecko.driver", caminhoArquivos.getChromeDriver());
 		ChromeOptions options = new ChromeOptions();
 		// options.addArguments("--headless=new");
 
@@ -74,7 +77,7 @@ public class VarredorWeb {
 			try {
 
 				driver.get(urlProduto);
-				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(25));
 
 				// erro do site https
 				By alertaHttps = By.xpath("//*[@id=\"details-button\"]");
