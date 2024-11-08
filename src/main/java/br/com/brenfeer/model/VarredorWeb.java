@@ -26,6 +26,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import br.com.brenfeer.model.util.CaminhoArquivos;
 
+
 public class VarredorWeb {
 
 	private String codigoFormatado = null;
@@ -45,13 +46,9 @@ public class VarredorWeb {
 	private static WebDriver driver = null;
 
 	public VarredorWeb() {
-//		System.setProperty("webdriver.gecko.driver", "C:\\Projeto Robo Brenfeer\\bin\\webdriver\\geckodriver.exe");
-//		FirefoxOptions options = new FirefoxOptions();
-//		options.setHeadless(true);
-//		 Adicione opções do Firefox, se necessário
-
-		System.setProperty("webdriver.gecko.driver", caminhoArquivos.getChromeDriver());
-		ChromeOptions options = new ChromeOptions();
+//		System.setProperty("webdriver.gecko.driver", caminhoArquivos.getGeckoDriver());
+		System.setProperty("webdriver.chrome.driver", caminhoArquivos.getChromeDriver());
+    	ChromeOptions options = new ChromeOptions();
 		// options.addArguments("--headless=new");
 
 		try {
@@ -77,7 +74,7 @@ public class VarredorWeb {
 			try {
 
 				driver.get(urlProduto);
-				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(25));
+				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 				// erro do site https
 				By alertaHttps = By.xpath("//*[@id=\"details-button\"]");
@@ -271,6 +268,7 @@ public class VarredorWeb {
 									.until(ExpectedConditions.presenceOfElementLocated(campoQtdeProdutoXpath));
 							By botaoAdicionar = By.className("btn_add_div");
 							if (campoQtdeProduto.isDisplayed()) {
+								campoQtdeProduto.clear();
 								campoQtdeProduto.sendKeys("5000000", Keys.ENTER);
 								System.out.println("Clicou no campo de quantidade.");
 

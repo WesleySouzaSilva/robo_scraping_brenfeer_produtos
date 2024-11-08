@@ -2,8 +2,8 @@ package br.com.brenfeer.model.util;
 
 public class CaminhoArquivos {
 
-	private static final String WINDOWS_ROOT_PATH = "C:\\Projeto Robo Brenfeer";
-	private static final String LINUX_ROOT_PATH = "/home/dev/Pasta Projetos Execucao/Projeto Robo Brenfeer";
+	private static final String WINDOWS_ROOT_PATH = "C:\\Projeto Robo Brenfeer\\";
+	private static final String LINUX_ROOT_PATH = "/home/dev/Pasta Projetos Execucao/Projeto Robo Brenfeer/";
 
 	public String getCaminhoArquivos() {
 		String os = System.getProperty("os.name").toLowerCase();
