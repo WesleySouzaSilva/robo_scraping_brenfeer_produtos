@@ -97,7 +97,7 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<finalName>robo-leitura-paginas-produtos</finalName>
+							<finalName>robo-scraping-produtos</finalName>
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">

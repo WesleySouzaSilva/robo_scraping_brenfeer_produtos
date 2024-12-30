@@ -26,7 +26,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import br.com.brenfeer.model.util.CaminhoArquivos;
 
-
 public class VarredorWeb {
 
 	private String codigoFormatado = null;
@@ -48,7 +47,7 @@ public class VarredorWeb {
 	public VarredorWeb() {
 //		System.setProperty("webdriver.gecko.driver", caminhoArquivos.getGeckoDriver());
 		System.setProperty("webdriver.chrome.driver", caminhoArquivos.getChromeDriver());
-    	ChromeOptions options = new ChromeOptions();
+		ChromeOptions options = new ChromeOptions();
 		// options.addArguments("--headless=new");
 
 		try {
@@ -76,25 +75,62 @@ public class VarredorWeb {
 				driver.get(urlProduto);
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-				// erro do site https
-				By alertaHttps = By.xpath("//*[@id=\"details-button\"]");
-				if (driver.findElements(alertaHttps).size() > 0) {
-					WebElement alertaElemento = wait
-							.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"details-button\"]")));
-					if (alertaElemento.isDisplayed()) {
-						alertaElemento.click();
-					}
-					WebElement linkLiberacao = wait
-							.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"proceed-link\"]")));
-					if (linkLiberacao.isDisplayed()) {
-						linkLiberacao.click();
+				try {
+					// Tentar fechar o modal clicando no botão "Fechar"
+					WebElement closeButton = wait
+							.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".welcome-modal__close")));
+					closeButton.click();
+					System.out.println("Modal fechado clicando no botão de fechar.");
+				} catch (TimeoutException | NoSuchElementException es) {
+					try {
+						// Caso o botão de fechar não funcione, tentar clicar no botão "OK"
+						WebElement okButton = wait.until(ExpectedConditions
+								.elementToBeClickable(By.cssSelector(".welcome-modal__bottom-button")));
+						okButton.click();
+						System.out.println("Modal fechado clicando no botão OK.");
+					} catch (TimeoutException | NoSuchElementException ex) {
+						System.out.println("O modal não foi encontrado ou já estava fechado.");
 					}
 				}
 
-				By formularioCookiesButton = By.cssSelector("*[data-test='COOKIE-POPUP-CLOSE-BTN']");
-				if (driver.findElements(formularioCookiesButton).size() > 0) {
-					WebElement element = wait.until(ExpectedConditions.elementToBeClickable(formularioCookiesButton));
-					element.click();
+				try {
+
+					By alertaHttps = By.xpath("//*[@id=\"details-button\"]");
+					if (driver.findElements(alertaHttps).size() > 0) {
+						WebElement alertaElemento = wait.until(
+								ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"details-button\"]")));
+						if (alertaElemento.isDisplayed()) {
+							alertaElemento.click();
+						}
+						WebElement linkLiberacao = wait
+								.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"proceed-link\"]")));
+						if (linkLiberacao.isDisplayed()) {
+							linkLiberacao.click();
+						}
+					}
+
+				} catch (NoSuchElementException e) {
+					System.out.println("nao encontrou o elemento welcome...");
+				}
+
+				try {
+
+					By formularioCookiesButton = By.cssSelector("*[data-test='COOKIE-POPUP-CLOSE-BTN']");
+					if (driver.findElements(formularioCookiesButton).size() > 0) {
+						WebElement element = wait
+								.until(ExpectedConditions.elementToBeClickable(formularioCookiesButton));
+						element.click();
+					}
+
+				} catch (NoSuchElementException e) {
+					System.out.println("formulario ALERTA HTTPS nao esta presente...\n");
+				}
+
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 
 				// Verificar a presença do botão de detalhe do produto
@@ -320,7 +356,8 @@ public class VarredorWeb {
 										quantidadeDisponivelFormatada = obterParteDaString(
 												extrairTextoQtdeEstoque(campoQtdeDisponivelEstoque), "antes");
 										unidadeMedidaProduto = obterParteDaString(
-												extrairTextoQtdeEstoque(campoQtdeDisponivelEstoque), "depois").replace(".", "");
+												extrairTextoQtdeEstoque(campoQtdeDisponivelEstoque), "depois")
+														.replace(".", "");
 										System.out.println(
 												"Quantidade produto formatado : " + quantidadeDisponivelFormatada);
 
@@ -349,7 +386,8 @@ public class VarredorWeb {
 											System.out.println("Quantidade produto formatado REGEX : "
 													+ quantidadeDisponivelFormatada);
 											unidadeMedidaProduto = obterParteDaString(
-													extrairTextoQtdeEstoque(campoQtdeDisponivelEstoque), "depois".replace(".", ""));
+													extrairTextoQtdeEstoque(campoQtdeDisponivelEstoque),
+													"depois".replace(".", ""));
 											mensagemOuErro = new String("sucesso ao capturar dados");
 											break;
 										} catch (NoSuchElementException | TimeoutException n) {
@@ -375,7 +413,6 @@ public class VarredorWeb {
 				System.out.println("pegou o sku ovd : " + skuInternoOvd);
 				listaDados.clear();
 				listaDados.add(dadosPlanilha);
-
 
 			} catch (ElementClickInterceptedException e) {
 				if (valorDesconto == null) {
